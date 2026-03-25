@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import { useTerminal } from "@/hooks/useTerminal";
 import { useTheme } from "@/hooks/useTheme";
-import TerminalHeader from "./TerminalHeader";
 import TerminalBody from "./TerminalBody";
 import DoomGame from "@/components/DoomGame";
 
 export default function Terminal() {
-  const { theme, setTheme, themeClass } = useTheme();
+  const { setTheme, themeClass } = useTheme();
   const {
     history,
     inputRef,
@@ -18,16 +17,25 @@ export default function Terminal() {
     navigateHistory,
   } = useTerminal(setTheme);
 
-  const [doomOpen, setDoomOpen]       = useState(false);
-  const [doomMounted, setDoomMounted] = useState(false);
+  const [doomOpen,     setDoomOpen]     = useState(false);
+  const [doomMounted,  setDoomMounted]  = useState(false);
+  const [inputLocked,  setInputLocked]  = useState(false);
 
   useEffect(() => {
-    const handler = () => {
-      setDoomMounted(true);
-      setDoomOpen(true);
-    };
+    const handler = () => { setDoomMounted(true); setDoomOpen(true); };
     globalThis.addEventListener("doom:open", handler);
     return () => globalThis.removeEventListener("doom:open", handler);
+  }, []);
+
+  useEffect(() => {
+    const onLock   = () => setInputLocked(true);
+    const onUnlock = () => setInputLocked(false);
+    globalThis.addEventListener("terminal:lock",   onLock);
+    globalThis.addEventListener("terminal:unlock", onUnlock);
+    return () => {
+      globalThis.removeEventListener("terminal:lock",   onLock);
+      globalThis.removeEventListener("terminal:unlock", onUnlock);
+    };
   }, []);
 
   const handleDoomClose = () => {
@@ -37,7 +45,6 @@ export default function Terminal() {
 
   return (
     <div className={`h-full w-full flex flex-col bg-term-bg ${themeClass}`}>
-      <TerminalHeader theme={theme} />
       <TerminalBody
         history={history}
         inputRef={inputRef}
@@ -46,6 +53,7 @@ export default function Terminal() {
         historyIndex={historyIndex}
         getHistoryValue={getHistoryValue}
         focusLocked={doomOpen}
+        inputLocked={inputLocked}
       />
 
       {doomMounted && (

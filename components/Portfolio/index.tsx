@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import type { IconType } from "react-icons";
@@ -25,6 +26,8 @@ import {
 import { THEMES } from "@/data/themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/hooks/useTheme";
+import { RainEffect } from "@/components/output/RainEffect";
+import SnakeModal from "@/components/SnakeModal";
 
 const ICON_MAP: Record<string, IconType> = {
   "AWS (EC2, S3, VPC, IAM)": FaAws,
@@ -108,6 +111,20 @@ export default function Portfolio() {
   const { lang } = useLanguage();
   const { theme, setTheme, themeClass } = useTheme();
 
+  const [rain,  setRain]  = useState(false);
+  const [snake, setSnake] = useState(false);
+
+  useEffect(() => {
+    const onRain  = () => setRain(true);
+    const onSnake = () => setSnake(true);
+    globalThis.addEventListener("terraform:rain", onRain);
+    globalThis.addEventListener("snake:open",     onSnake);
+    return () => {
+      globalThis.removeEventListener("terraform:rain", onRain);
+      globalThis.removeEventListener("snake:open",     onSnake);
+    };
+  }, []);
+
   const t = {
     about:      { pt: "sobre",       en: "about" },
     experience: { pt: "experiência", en: "experience" },
@@ -126,6 +143,9 @@ export default function Portfolio() {
   };
 
   return (
+    <>
+    <RainEffect active={rain} />
+    <SnakeModal visible={snake} onClose={() => setSnake(false)} />
     <div className={`min-h-screen bg-term-bg text-term-text font-mono ${themeClass}`}>
 
       <section className="relative min-h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
@@ -418,5 +438,6 @@ export default function Portfolio() {
         <span className="text-term-green">▸</span> João Gustavo Santiago de Lima &nbsp;·&nbsp; {new Date().getFullYear()}
       </footer>
     </div>
+    </>
   );
 }

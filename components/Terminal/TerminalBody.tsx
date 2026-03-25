@@ -18,6 +18,7 @@ interface TerminalBodyProps {
   readonly historyIndex: number;
   readonly getHistoryValue: (index: number) => string;
   readonly focusLocked?: boolean;
+  readonly inputLocked?: boolean;
 }
 
 function Prompt() {
@@ -54,18 +55,26 @@ export default function TerminalBody({
   onNavigate,
   historyIndex,
   getHistoryValue,
-  focusLocked = false,
+  focusLocked  = false,
+  inputLocked  = false,
 }: TerminalBodyProps) {
   const [value, setValue] = useState("");
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const bodyRef   = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setValue(getHistoryValue(historyIndex));
   }, [historyIndex, getHistoryValue]);
 
+  // Auto-scroll on any DOM change inside the terminal (covers animated outputs too)
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [history]);
+    const el = bodyRef.current;
+    if (!el) return;
+    const observer = new MutationObserver(() => {
+      el.scrollTop = el.scrollHeight;
+    });
+    observer.observe(el, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
@@ -87,33 +96,39 @@ export default function TerminalBody({
   );
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 space-y-1 cursor-text font-mono text-sm">
+    <div ref={bodyRef} className="flex-1 overflow-y-auto px-6 pt-14 pb-2 space-y-1 cursor-text font-mono text-sm">
       {history.map((entry) => (
         <HistoryLine key={entry.id} entry={entry} />
       ))}
 
-      <div className="flex items-center leading-relaxed relative">
-        <Prompt />
-        <span className="text-term-text whitespace-pre">{value}</span>
-        <span className="cursor-blink text-term-green">▊</span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={() => { if (!focusLocked) setTimeout(() => inputRef.current?.focus(), 50); }}
-          autoFocus
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="none"
-          spellCheck={false}
-          aria-label="terminal input"
-          className="absolute opacity-0 w-full h-full top-0 left-0 cursor-text"
-        />
-      </div>
+      {inputLocked ? (
+        <div className="flex items-center gap-2 text-term-muted text-sm leading-relaxed select-none">
+          <span className="animate-pulse text-term-green">⠿</span>
+          <span>executing...</span>
+        </div>
+      ) : (
+        <div className="flex items-center leading-relaxed relative">
+          <Prompt />
+          <span className="text-term-text whitespace-pre">{value}</span>
+          <span className="cursor-blink text-term-green">▊</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={() => { if (!focusLocked) setTimeout(() => inputRef.current?.focus(), 50); }}
+            autoFocus
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            aria-label="terminal input"
+            className="absolute opacity-0 w-full h-full top-0 left-0 cursor-text"
+          />
+        </div>
+      )}
 
-      <div ref={bottomRef} />
     </div>
   );
 }

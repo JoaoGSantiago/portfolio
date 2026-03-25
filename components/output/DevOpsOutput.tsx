@@ -1,15 +1,18 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { i18n } from "@/data/i18n";
 
 const dockerContainers = [
-  { id: "a1b2c3d4", image: "nginx:1.25-alpine",     status: "Up 2 hours",  ports: "0.0.0.0:80->80/tcp",     name: "nginx-proxy"  },
-  { id: "b2c3d4e5", image: "node:20-alpine",         status: "Up 3 hours",  ports: "0.0.0.0:3000->3000/tcp", name: "api-service"  },
-  { id: "c3d4e5f6", image: "postgres:16",             status: "Up 2 days",   ports: "5432/tcp",               name: "postgres-db"  },
-  { id: "d4e5f6a1", image: "redis:7.2-alpine",       status: "Up 2 days",   ports: "6379/tcp",               name: "redis-cache"  },
-  { id: "e5f6a1b2", image: "prom/prometheus:v2.48",  status: "Up 5 days",   ports: "0.0.0.0:9090->9090/tcp", name: "prometheus"   },
-  { id: "f6a1b2c3", image: "grafana/grafana:10.2",   status: "Up 5 days",   ports: "0.0.0.0:3001->3000/tcp", name: "grafana"      },
+  { id: "a1b2c3d4", image: "nginx:1.25-alpine",              status: "Up 2 hours",  ports: "0.0.0.0:80->80/tcp",     name: "nginx-proxy"    },
+  { id: "b2c3d4e5", image: "node:20-alpine",                 status: "Up 3 hours",  ports: "0.0.0.0:3000->3000/tcp", name: "api-service"    },
+  { id: "c3d4e5f6", image: "postgres:16",                    status: "Up 2 days",   ports: "5432/tcp",               name: "postgres-db"    },
+  { id: "d4e5f6a1", image: "redis:7.2-alpine",               status: "Up 2 days",   ports: "6379/tcp",               name: "redis-cache"    },
+  { id: "e5f6a1b2", image: "prom/prometheus:v2.48",          status: "Up 5 days",   ports: "0.0.0.0:9090->9090/tcp", name: "prometheus"     },
+  { id: "f6a1b2c3", image: "grafana/grafana:10.2",           status: "Up 5 days",   ports: "0.0.0.0:3001->3000/tcp", name: "grafana"        },
+  { id: "a7b8c9d0", image: "joaogsantiago/portfolio:latest", status: "Up 1 hour",   ports: "0.0.0.0:3000->3000/tcp", name: "portfolio-web"  },
+  { id: "b8c9d0e1", image: "joaogsantiago/snake:v1.0",       status: "Up 1 hour",   ports: "-",                      name: "snake-game"     },
 ];
 
 export function DockerPsOutput() {
@@ -100,14 +103,16 @@ export function DockerUsageHint() {
 
 
 const kubePods = [
-  { ns: "production",  name: "api-deploy-7d9f8b-xk2lp",    ready: "1/1", status: "Running", restarts: 0,  age: "2d5h" },
-  { ns: "production",  name: "api-deploy-7d9f8b-mn3qr",    ready: "1/1", status: "Running", restarts: 0,  age: "2d5h" },
-  { ns: "production",  name: "nginx-ingress-5c8d9f-p4wvz", ready: "1/1", status: "Running", restarts: 0,  age: "7d"   },
-  { ns: "production",  name: "postgres-statefulset-0",     ready: "1/1", status: "Running", restarts: 0,  age: "14d"  },
-  { ns: "production",  name: "redis-statefulset-0",        ready: "1/1", status: "Running", restarts: 0,  age: "14d"  },
-  { ns: "monitoring",  name: "prometheus-stack-0",         ready: "1/1", status: "Running", restarts: 1,  age: "30d"  },
-  { ns: "monitoring",  name: "grafana-7b8c9d-r5tzx",       ready: "1/1", status: "Running", restarts: 0,  age: "30d"  },
-  { ns: "kube-system", name: "coredns-5d78c-l8rqm",        ready: "2/2", status: "Running", restarts: 0,  age: "45d"  },
+  { ns: "production",  name: "api-deploy-7d9f8b-xk2lp",    ready: "1/1", status: "Running",           restarts: 0,  age: "2d5h" },
+  { ns: "production",  name: "api-deploy-7d9f8b-mn3qr",    ready: "1/1", status: "Running",           restarts: 0,  age: "2d5h" },
+  { ns: "production",  name: "nginx-ingress-5c8d9f-p4wvz", ready: "1/1", status: "Running",           restarts: 0,  age: "7d"   },
+  { ns: "production",  name: "portfolio-web-9f3a2b-k7xmn", ready: "1/1", status: "Running",           restarts: 0,  age: "1h"   },
+  { ns: "production",  name: "postgres-statefulset-0",     ready: "1/1", status: "Running",           restarts: 0,  age: "14d"  },
+  { ns: "production",  name: "redis-statefulset-0",        ready: "1/1", status: "Running",           restarts: 0,  age: "14d"  },
+  { ns: "monitoring",  name: "prometheus-stack-0",         ready: "1/1", status: "Running",           restarts: 1,  age: "30d"  },
+  { ns: "monitoring",  name: "grafana-7b8c9d-r5tzx",       ready: "1/1", status: "Running",           restarts: 0,  age: "30d"  },
+  { ns: "kube-system", name: "coredns-5d78c-l8rqm",        ready: "2/2", status: "Running",           restarts: 0,  age: "45d"  },
+  { ns: "kube-system", name: "whale-battle-x9z3q",         ready: "0/1", status: "CrashLoopBackOff",  restarts: 47, age: "2m"   },
 ];
 
 export function KubectlPodsOutput() {
@@ -416,6 +421,381 @@ export function UptimeOutput() {
           <span className="text-term-muted"> 48%  (48GB / 100GB)</span>
         </p>
       </div>
+    </div>
+  );
+}
+
+
+// ─── docker compose up -d ────────────────────────────────────────────────────
+
+type ComposeLine = { id: string; text: string; color: string };
+
+const composeMessages: ComposeLine[] = [
+  { id: "c00", text: "[+] Building 5/5",                                              color: "text-term-green"  },
+  { id: "c01", text: " ✔ Network portfolio_default                      Created",     color: "text-term-green"  },
+  { id: "c02", text: " ✔ Volume   portfolio_data                        Created",     color: "text-term-green"  },
+  { id: "c03", text: " ⠿ Container portfolio-db         Pulling image...",            color: "text-term-blue"   },
+  { id: "c04", text: "   → docker.io/library/postgres:16 — 425 MB",                  color: "text-term-muted"  },
+  { id: "c05", text: " ✔ Container portfolio-db         Started",                     color: "text-term-green"  },
+  { id: "c06", text: " ⠿ Container portfolio-redis      Pulling image...",            color: "text-term-blue"   },
+  { id: "c07", text: "   → docker.io/library/redis:7.2-alpine — 38 MB",              color: "text-term-muted"  },
+  { id: "c08", text: " ✔ Container portfolio-redis      Started",                     color: "text-term-green"  },
+  { id: "c09", text: " ⠿ Container portfolio-api        Building...",                 color: "text-term-yellow" },
+  { id: "c10", text: "   → Step 1/8  FROM node:20-alpine",                           color: "text-term-muted"  },
+  { id: "c11", text: "   → Step 2/8  WORKDIR /app",                                  color: "text-term-muted"  },
+  { id: "c12", text: "   → Step 3/8  COPY package*.json ./",                         color: "text-term-muted"  },
+  { id: "c13", text: "   → Step 4/8  RUN npm ci --only=production",                  color: "text-term-muted"  },
+  { id: "c14", text: "   → Step 5/8  COPY . .",                                      color: "text-term-muted"  },
+  { id: "c15", text: "   → Step 6/8  RUN npm run build",                             color: "text-term-muted"  },
+  { id: "c16", text: "   → Step 7/8  EXPOSE 3000",                                   color: "text-term-muted"  },
+  { id: "c17", text: '   → Step 8/8  CMD ["node", "server.js"]',                     color: "text-term-muted"  },
+  { id: "c18", text: " ✔ Container portfolio-api        Started   → :3000",          color: "text-term-green"  },
+  { id: "c19", text: " ⠿ Container portfolio-nginx      Pulling image...",            color: "text-term-blue"   },
+  { id: "c20", text: " ✔ Container portfolio-nginx      Started   → :80",            color: "text-term-green"  },
+  { id: "c21", text: " ⠿ Container snake-game           Pulling image...",            color: "text-term-blue"   },
+  { id: "c22", text: "   → docker.io/joaogsantiago/snake:v1.0 — 12 MB",             color: "text-term-muted"  },
+  { id: "c23", text: " ✔ Container snake-game           Started",                     color: "text-term-green"  },
+];
+
+const lock   = (): void => { globalThis.dispatchEvent(new CustomEvent("terminal:lock")); };
+const unlock = (): void => { globalThis.dispatchEvent(new CustomEvent("terminal:unlock")); };
+
+export function DockerComposeOutput() {
+  const { lang } = useLanguage();
+  const [shown,  setShown]  = useState<ComposeLine[]>([]);
+  const [done,   setDone]   = useState(false);
+  const idxRef = useRef(0);
+
+  useEffect(() => {
+    lock();
+    const interval = setInterval(() => {
+      const line = composeMessages[idxRef.current];
+      if (line) {
+        idxRef.current += 1;
+        setShown((prev) => [...prev, line]);
+      } else {
+        clearInterval(interval);
+        setDone(true);
+        unlock();
+      }
+    }, 750);
+    return () => { clearInterval(interval); unlock(); };
+  }, []);
+
+  return (
+    <div className="text-xs font-mono space-y-0.5">
+      <p className="text-term-green text-sm mb-1">$ docker compose up -d</p>
+
+      {shown.map((line) => (
+        <p key={line.id} className={line.color}>{line.text}</p>
+      ))}
+
+      {done && (
+        <div className="border-t border-term-border pt-2 mt-1 space-y-1">
+          <p className="text-term-green font-semibold">
+            ✔ {lang === "pt" ? "Todos os containers iniciados com sucesso!" : "All containers started successfully!"}
+          </p>
+          <p className="text-term-muted">
+            {lang === "pt"
+              ? "Portfolio disponível em http://localhost:3000"
+              : "Portfolio available at http://localhost:3000"}
+          </p>
+          <p className="text-term-muted">
+            {lang === "pt" ? "Dica: rode " : "Tip: run "}
+            <span className="text-term-yellow font-bold">docker ps</span>
+            {lang === "pt" ? " para ver os containers ativos" : " to see active containers"}
+          </p>
+          <p className="text-term-cyan">
+            {lang === "pt"
+              ? "🐍 O container snake-game está rodando! Digite "
+              : "🐍 snake-game container is running! Type "}
+            <span className="text-term-yellow font-bold">snake</span>
+            {lang === "pt" ? " para jogar." : " to play."}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ─── kubectl apply -f k8s/ (whale vs K8s ship animation) ─────────────────────
+
+const WHALE_FRAMES = [
+  // frame: [whale col, scene]
+  [0,  false],
+  [4,  false],
+  [8,  false],
+  [12, false],
+  [16, false],
+  [20, false],
+  [24, false],
+  [28, false],
+  [32, false],
+  [36, true ],   // approaching
+  [40, true ],   // close
+  [44, true ],   // impact
+] as const;
+
+const SCENE_W = 56;
+
+function buildWhaleLine(col: number, line: number): string {
+  // Docker whale ASCII (5 lines tall)
+  const whale = [
+    "   ##    ",
+    " ######  ",
+    "(  🐳  ) ",
+    " ######  ",
+    "  ~~~~   ",
+  ];
+  // K8s ship (5 lines tall, right side)
+  const ship = [
+    String.raw`   /\   `,
+    String.raw`  /K8\  `,
+    String.raw` /____\ `,
+    "|  ⚓  |",
+    "|______|",
+  ];
+
+  const wh = whale[line] ?? "         ";
+  const sh = ship[line]  ?? "        ";
+  const gap = Math.max(0, SCENE_W - col - wh.length - sh.length);
+  return wh + " ".repeat(gap) + sh;
+}
+
+const IMPACT_ART = [
+  String.raw`   ##              💥  /\   `,
+  String.raw` ##XX##     BOOM!      /K8\  `,
+  String.raw`(  🐳  )  >----<>  /____\ `,
+  " ##XX##            |  ⚓  |",
+  "  ~~~~             |______|",
+];
+
+const AFTERMATH_ART = [
+  "                  💥        ",
+  "  🐳  ~  ~  ~  ~  ~  ~  ⚓  ",
+  "       Error: CrashLoopBackOff",
+  "       whale-battle-x9z3q  0/1",
+  "       Restarts: 47         ",
+];
+
+type ApplyStep = { id: string; text: string; color: string };
+
+const applySteps: ApplyStep[] = [
+  { id: "a0", text: "namespace/portfolio created",                     color: "text-term-green" },
+  { id: "a1", text: "deployment.apps/portfolio-web created",           color: "text-term-green" },
+  { id: "a2", text: "service/portfolio-svc created",                   color: "text-term-green" },
+  { id: "a3", text: "ingress.networking.k8s.io/portfolio-ing created", color: "text-term-green" },
+  { id: "a4", text: "horizontalpodautoscaler/portfolio-hpa created",   color: "text-term-green" },
+  { id: "a5", text: "configmap/portfolio-config created",              color: "text-term-green" },
+];
+
+export function KubectlApplyOutput() {
+  const { lang } = useLanguage();
+  const [phase,    setPhase]    = useState<"deploy" | "whale" | "impact" | "aftermath" | "done">("deploy");
+  const [frameIdx, setFrameIdx] = useState(0);
+  const [steps,    setSteps]    = useState<ApplyStep[]>([]);
+  const stepRef = useRef(0);
+
+  // Lock terminal for the whole animation
+  useEffect(() => {
+    lock();
+    return () => unlock();
+  }, []);
+
+  // Phase 1: show apply steps
+  useEffect(() => {
+    if (phase !== "deploy") return;
+    const t = setInterval(() => {
+      const item = applySteps[stepRef.current];
+      if (item) {
+        stepRef.current += 1;
+        setSteps((p) => [...p, item]);
+      } else {
+        clearInterval(t);
+        setPhase("whale");
+      }
+    }, 600);
+    return () => clearInterval(t);
+  }, [phase]);
+
+  // Phase 2: animate whale approaching
+  useEffect(() => {
+    if (phase !== "whale") return;
+    setFrameIdx(0);
+    const t = setInterval(() => {
+      setFrameIdx((f: number) => {
+        const next = f + 1;
+        if (next >= WHALE_FRAMES.length) {
+          clearInterval(t);
+          setPhase("impact");
+          return f;
+        }
+        return next;
+      });
+    }, 220);
+    return () => clearInterval(t);
+  }, [phase]);
+
+  // Phase 3: impact pause → aftermath
+  useEffect(() => {
+    if (phase !== "impact") return;
+    const t = setTimeout(() => setPhase("aftermath"), 900);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  // Phase 4: aftermath → done
+  useEffect(() => {
+    if (phase !== "aftermath") return;
+    const t = setTimeout(() => {
+      setPhase("done");
+      globalThis.dispatchEvent(new CustomEvent("terminal:unlock"));
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  const col = WHALE_FRAMES[frameIdx]?.[0] ?? 44;
+
+  return (
+    <div className="text-xs font-mono space-y-1">
+      <p className="text-term-green text-sm">$ kubectl apply -f k8s/</p>
+
+      {steps.map((s) => (
+        <p key={s.id} className={s.color}>{s.text}</p>
+      ))}
+
+      {(phase === "whale" || phase === "impact" || phase === "aftermath") && (
+        <div className="border border-term-border rounded bg-term-bg-secondary p-2 mt-1 space-y-0">
+          <p className="text-term-muted text-xs mb-1">
+            {lang === "pt" ? "# detectando conflito de orquestração..." : "# detecting orchestration conflict..."}
+          </p>
+
+          {phase === "whale" && (
+            <div className="text-term-blue font-mono leading-tight">
+              {[0,1,2,3,4].map((l) => (
+                <p key={l} className="whitespace-pre">{buildWhaleLine(col, l)}</p>
+              ))}
+              <p className="text-term-muted mt-1">{"~".repeat(SCENE_W)}</p>
+            </div>
+          )}
+
+          {phase === "impact" && (
+            <div className="text-term-yellow font-mono leading-tight">
+              {IMPACT_ART.map((ln) => <p key={ln} className="whitespace-pre">{ln}</p>)}
+              <p className="text-term-muted mt-1">{"~".repeat(SCENE_W)}</p>
+            </div>
+          )}
+
+          {phase === "aftermath" && (
+            <div className="font-mono leading-tight">
+              {AFTERMATH_ART.map((ln) => (
+                <p key={ln} className={ln.startsWith("       Error") || ln.startsWith("       whale") || ln.startsWith("       Restarts") ? "text-term-red" : "text-term-cyan"}>{ln}</p>
+              ))}
+              <p className="text-term-muted mt-1">{"~".repeat(SCENE_W)}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {phase === "done" && (
+        <div className="border-t border-term-border pt-2 space-y-1">
+          <p className="text-term-green font-semibold">
+            ✔ {lang === "pt" ? "Deploy concluído (com... incidentes)" : "Deploy complete (with... incidents)"}
+          </p>
+          <p className="text-term-muted">
+            {lang === "pt"
+              ? "Use kubectl get pods --all-namespaces para inspecionar"
+              : "Use kubectl get pods --all-namespaces to inspect"}
+          </p>
+          <p className="text-term-red text-xs">
+            Warning: whale-battle-x9z3q está em CrashLoopBackOff (47 restarts).
+            A baleia do Docker não gostou do Kubernetes. 🐳💥⛵
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ─── terraform init (matrix rain + provisioning) ─────────────────────────────
+
+type TfInitLine = { id: string; text: string; color: string };
+
+const tfInitMessages: TfInitLine[] = [
+  { id: "t00", text: "Initializing the backend...",                                    color: "text-term-text"  },
+  { id: "t01", text: "  ✔ Backend initialized (s3://joao-tfstate/portfolio.tfstate)", color: "text-term-green" },
+  { id: "t02", text: "",                                                               color: "text-term-muted" },
+  { id: "t03", text: "Initializing provider plugins...",                               color: "text-term-text"  },
+  { id: "t04", text: '  - Finding hashicorp/aws versions matching "~> 5.0"...',       color: "text-term-muted" },
+  { id: "t05", text: '  - Finding hashicorp/random versions matching "~> 3.5"...',    color: "text-term-muted" },
+  { id: "t06", text: "  - Installing hashicorp/aws v5.31.0...",                       color: "text-term-blue"  },
+  { id: "t07", text: "  ✔ Installed hashicorp/aws v5.31.0 (signed by HashiCorp)",    color: "text-term-green" },
+  { id: "t08", text: "  - Installing hashicorp/random v3.6.0...",                     color: "text-term-blue"  },
+  { id: "t09", text: "  ✔ Installed hashicorp/random v3.6.0 (signed by HashiCorp)",  color: "text-term-green" },
+  { id: "t10", text: "",                                                               color: "text-term-muted" },
+  { id: "t11", text: "Terraform has been successfully initialized!",                   color: "text-term-green" },
+  { id: "t12", text: "",                                                               color: "text-term-muted" },
+  { id: "t13", text: "  You may now begin working with Terraform. Try running",       color: "text-term-muted" },
+  { id: "t14", text: '  "terraform plan" to see any changes required.',               color: "text-term-muted" },
+];
+
+function scheduleRain() {
+  setTimeout(() => {
+    globalThis.dispatchEvent(new CustomEvent("portfolio:navigate", { detail: { section: "" } }));
+    setTimeout(() => globalThis.dispatchEvent(new CustomEvent("terraform:rain")), 400);
+  }, 800);
+}
+
+export function TerraformInitOutput() {
+  const { lang } = useLanguage();
+  const [shown, setShown] = useState<TfInitLine[]>([]);
+  const [done,  setDone]  = useState(false);
+  const idxRef = useRef(0);
+
+  useEffect(() => {
+    lock();
+    return () => unlock();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const item = tfInitMessages[idxRef.current];
+      if (item) {
+        idxRef.current += 1;
+        setShown((p) => [...p, item]);
+      } else {
+        clearInterval(interval);
+        setDone(true);
+        unlock();
+        scheduleRain();
+      }
+    }, 650);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="text-xs font-mono space-y-0.5">
+      <p className="text-term-green text-sm mb-1">$ terraform init</p>
+
+      {shown.map((line) => (
+        <p key={line.id} className={line.color || "text-term-muted"}>{line.text || "\u00a0"}</p>
+      ))}
+
+      {done && (
+        <div className="border-t border-term-border pt-2 mt-1 space-y-1">
+          <p className="text-term-purple font-semibold">
+            ⛈ {lang === "pt"
+              ? "Infraestrutura inicializada. Verificando ambiente..."
+              : "Infrastructure initialized. Checking environment..."}
+          </p>
+          <p className="text-term-muted text-xs">
+            {lang === "pt"
+              ? "Um efeito colateral foi detectado no ambiente de produção..."
+              : "A side effect was detected in the production environment..."}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

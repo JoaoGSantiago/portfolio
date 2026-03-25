@@ -26,12 +26,13 @@ interface DevOpsCmdItem {
 }
 
 const devopsCommands: DevOpsCmdItem[] = [
-  { cmd: "docker",     descKey: "docker",    usage: "ps | images"    },
-  { cmd: "kubectl",    descKey: "kubectl",   usage: "get pods|nodes" },
-  { cmd: "terraform",  descKey: "terraform", usage: "plan"           },
-  { cmd: "./deploy",   descKey: "deploy",    usage: ""               },
-  { cmd: "uptime",     descKey: "uptime",    usage: ""               },
-  { cmd: "./doom",     descKey: "doom",      usage: ""               },
+  { cmd: "docker",     descKey: "docker",    usage: "ps | images | compose up -d" },
+  { cmd: "kubectl",    descKey: "kubectl",   usage: "get pods|nodes | apply -f"   },
+  { cmd: "terraform",  descKey: "terraform", usage: "plan | init"                 },
+  { cmd: "./deploy",   descKey: "deploy",    usage: ""                            },
+  { cmd: "uptime",     descKey: "uptime",    usage: ""                            },
+  { cmd: "snake",      descKey: "snake",     usage: ""                            },
+  { cmd: "./doom",     descKey: "doom",      usage: ""                            },
 ];
 
 export default function HelpOutput() {

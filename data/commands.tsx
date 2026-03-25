@@ -11,10 +11,13 @@ import {
   DockerPsOutput,
   DockerImagesOutput,
   DockerUsageHint,
+  DockerComposeOutput,
   KubectlPodsOutput,
   KubectlNodesOutput,
   KubectlUsageHint,
+  KubectlApplyOutput,
   TerraformPlanOutput,
+  TerraformInitOutput,
   TerraformUsageHint,
   DeployOutput,
   UptimeOutput,
@@ -82,10 +85,11 @@ export const commands: CommandMap = {
   docker: {
     name: "docker",
     description: "List running containers or images",
-    usage: "docker ps | docker images",
+    usage: "docker ps | docker images | docker compose up -d",
     execute: (args) => {
-      if (args[0] === "ps")     return <DockerPsOutput />;
-      if (args[0] === "images") return <DockerImagesOutput />;
+      if (args[0] === "ps")                                          return <DockerPsOutput />;
+      if (args[0] === "images")                                      return <DockerImagesOutput />;
+      if (args[0] === "compose" && args[1] === "up" && args[2] === "-d") return <DockerComposeOutput />;
       return <DockerUsageHint />;
     },
   },
@@ -93,10 +97,11 @@ export const commands: CommandMap = {
   kubectl: {
     name: "kubectl",
     description: "Inspect Kubernetes resources",
-    usage: "kubectl get pods | kubectl get nodes",
+    usage: "kubectl get pods | kubectl get nodes | kubectl apply -f k8s/",
     execute: (args) => {
-      if (args[0] === "get" && args[1] === "pods")  return <KubectlPodsOutput />;
-      if (args[0] === "get" && args[1] === "nodes") return <KubectlNodesOutput />;
+      if (args[0] === "get"   && args[1] === "pods")  return <KubectlPodsOutput />;
+      if (args[0] === "get"   && args[1] === "nodes") return <KubectlNodesOutput />;
+      if (args[0] === "apply" && args[1] === "-f")    return <KubectlApplyOutput />;
       return <KubectlUsageHint />;
     },
   },
@@ -107,7 +112,25 @@ export const commands: CommandMap = {
     usage: "terraform plan | terraform init",
     execute: (args) => {
       if (args[0] === "plan") return <TerraformPlanOutput />;
+      if (args[0] === "init") return <TerraformInitOutput />;
       return <TerraformUsageHint />;
+    },
+  },
+
+  snake: {
+    name: "snake",
+    description: "Play Snake in the portfolio",
+    execute: () => {
+      setTimeout(() => {
+        globalThis.dispatchEvent(new CustomEvent("portfolio:navigate", { detail: { section: "" } }));
+        setTimeout(() => globalThis.dispatchEvent(new CustomEvent("snake:open")), 300);
+      }, 0);
+      return (
+        <p className="text-sm">
+          <span className="text-term-green">🐍 Abrindo Snake no portfolio...</span>
+          <span className="text-term-muted"> pressione ESC para fechar.</span>
+        </p>
+      );
     },
   },
 
