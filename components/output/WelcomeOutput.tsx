@@ -47,7 +47,7 @@ export default function WelcomeOutput() {
         </p>
         <p className="text-term-muted">
           {i18n.welcome.try[lang]}{" "}
-          <span className="text-term-green">./stack</span>
+          <span className="text-term-green">cat about</span>
           {" "}{i18n.welcome.toExploreStack[lang]}
         </p>
       </div>

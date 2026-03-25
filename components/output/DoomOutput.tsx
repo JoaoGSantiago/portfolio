@@ -18,12 +18,7 @@ export default function DoomOutput() {
         {isEn ? "Launching DOOM..." : "Iniciando DOOM..."}
       </p>
       <pre className="text-term-red text-xs leading-none select-none opacity-70">{`
-  _______  ______  ______  __   __
- |  ___  ||  __  ||  __  ||  \\ |  |
- | |   | || |  | || |  | ||   \\|  |
- | |   | || |  | || |  | || |\\    |
- | |___| || |__| || |__| || | \\   |
- |_______||______||______||_|  \\__|
+
 `}</pre>
       <div className="text-xs text-term-muted space-y-0.5 border-l-2 border-term-border pl-3">
         <p>

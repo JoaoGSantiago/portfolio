@@ -11,8 +11,8 @@ export const i18n = {
     } as T,
     try: { pt: "Tente", en: "Try" } as T,
     toExploreStack: {
-      pt: "para explorar meu stack tecnológico.",
-      en: "to explore my tech stack.",
+      pt: "para começar a explorar projetos, experiência profissional, certificações e muito mais.",
+      en: "to start exploring projects, work experience, certifications and much more.",
     } as T,
   },
   help: {
@@ -24,26 +24,10 @@ export const i18n = {
     commands: {
       welcome: { pt: "Mostrar a tela de boas-vindas", en: "Show the welcome screen" } as T,
       help: { pt: "Mostrar esta mensagem de ajuda", en: "Show this help message" } as T,
-      about: { pt: "Um pouco sobre mim", en: "A bit about me" } as T,
+      ls: { pt: "Listar seções disponíveis do portfolio", en: "List available portfolio sections" } as T,
+      cat: { pt: "Exibir conteúdo de uma seção (cat <seção>)", en: "Show section content (cat <section>)" } as T,
+      cd: { pt: "Navegar até uma seção do portfolio", en: "Navigate to a portfolio section" } as T,
       whoami: { pt: "Bio rápida", en: "Quick bio" } as T,
-      stack: {
-        pt: "Meu stack tecnológico com níveis de proficiência",
-        en: "My tech stack with proficiency levels",
-      } as T,
-      experience: {
-        pt: "Experiência profissional e histórico",
-        en: "Work experience & history",
-      } as T,
-      projects: {
-        pt: "Projetos pessoais e open-source",
-        en: "Open-source & personal projects",
-      } as T,
-      education: { pt: "Formação acadêmica", en: "Academic background" } as T,
-      certifications: {
-        pt: "Certificações profissionais",
-        en: "Professional certifications",
-      } as T,
-      contact: { pt: "Como me encontrar", en: "How to reach me" } as T,
       theme: {
         pt: "Listar ou trocar temas de cores",
         en: "List or switch color themes",

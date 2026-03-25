@@ -19,7 +19,6 @@ export default function TerminalInput({
 }: Readonly <TerminalInputProps>) {
   const [value, setValue] = useState("");
 
-  // Sync value when navigating history
   useEffect(() => {
     setValue(getHistoryValue(historyIndex));
   }, [historyIndex, getHistoryValue]);
@@ -42,7 +41,6 @@ export default function TerminalInput({
 
   return (
     <div className="flex items-center gap-1 px-4 py-3 border-t border-term-border shrink-0">
-      {/* Prompt */}
       <span className="text-term-green text-sm font-mono select-none">
         joao
       </span>
@@ -62,7 +60,6 @@ export default function TerminalInput({
         $
       </span>
 
-      {/* Input */}
       <input
         ref={inputRef}
         type="text"

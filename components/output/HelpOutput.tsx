@@ -11,14 +11,10 @@ interface CommandHelpItem {
 const mainCommands: CommandHelpItem[] = [
   { cmd: "welcome",         descKey: "welcome"                           },
   { cmd: "help",            descKey: "help",            alias: "?"       },
-  { cmd: "about",           descKey: "about"                             },
+  { cmd: "ls",              descKey: "ls"                                },
+  { cmd: "cat",             descKey: "cat",             alias: "<section>" },
+  { cmd: "cd",              descKey: "cd",              alias: "<section>" },
   { cmd: "whoami",          descKey: "whoami"                            },
-  { cmd: "./stack",         descKey: "stack"                             },
-  { cmd: "experience",      descKey: "experience",      alias: "exp"     },
-  { cmd: "projects",        descKey: "projects",        alias: "proj"    },
-  { cmd: "education",       descKey: "education",       alias: "edu"     },
-  { cmd: "certifications",  descKey: "certifications",  alias: "certs"   },
-  { cmd: "contact",         descKey: "contact"                           },
   { cmd: "theme",           descKey: "theme"                             },
   { cmd: "clear",           descKey: "clear"                             },
 ];
@@ -43,7 +39,6 @@ export default function HelpOutput() {
 
   return (
     <div className="space-y-3 text-sm">
-      {/* Main commands */}
       <p className="text-term-green">{i18n.help.title[lang]}</p>
       <div
         className="gap-x-8 gap-y-1"
@@ -64,7 +59,6 @@ export default function HelpOutput() {
         ))}
       </div>
 
-      {/* DevOps / extras section */}
       <div className="pt-1">
         <p className="text-term-blue">{i18n.devops.sectionTitle[lang]}</p>
         <div

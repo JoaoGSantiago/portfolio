@@ -22,6 +22,7 @@ import {
   education,
   certifications,
 } from "@/data/personal";
+import { THEMES } from "@/data/themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -105,7 +106,7 @@ function Tag({ name }: { readonly name: string }) {
 
 export default function Portfolio() {
   const { lang } = useLanguage();
-  const { themeClass } = useTheme();
+  const { theme, setTheme, themeClass } = useTheme();
 
   const t = {
     about:      { pt: "sobre",       en: "about" },
@@ -114,6 +115,12 @@ export default function Portfolio() {
     stack:      { pt: "stack",       en: "stack" },
     education:  { pt: "formação",    en: "education" },
     contact:    { pt: "contato",     en: "contact" },
+    themeTitle: { pt: "tema da interface", en: "interface theme" },
+    themeHint: {
+      pt: "Personalize as cores da página.",
+      en: "Customize page colors.",
+    },
+    currentTheme: { pt: "tema atual", en: "current theme" },
     scroll:     { pt: "role para explorar", en: "scroll to explore" },
     github:     { pt: "ver no GitHub ↗", en: "view on GitHub ↗" },
   };
@@ -121,7 +128,6 @@ export default function Portfolio() {
   return (
     <div className={`min-h-screen bg-term-bg text-term-text font-mono ${themeClass}`}>
 
-      {/* ── Hero ── */}
       <section className="relative min-h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
@@ -185,10 +191,8 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ── Sections ── */}
       <div className="max-w-4xl pb-32 space-y-28 px-6 mx-auto lg:ml-[20%] xl:ml-[22%]">
 
-        {/* About */}
         <Reveal>
           <section id="about" className="scroll-mt-24">
             <SectionHeader label={t.about[lang]} />
@@ -198,7 +202,6 @@ export default function Portfolio() {
           </section>
         </Reveal>
 
-        {/* Experience */}
         <Reveal>
           <section id="experience" className="scroll-mt-24">
             <SectionHeader label={t.experience[lang]} />
@@ -230,7 +233,6 @@ export default function Portfolio() {
           </section>
         </Reveal>
 
-        {/* Projects */}
         <Reveal>
           <section id="projects" className="scroll-mt-24">
             <SectionHeader label={t.projects[lang]} />
@@ -269,7 +271,6 @@ export default function Portfolio() {
           </section>
         </Reveal>
 
-        {/* Stack */}
         <Reveal>
           <section id="stack" className="scroll-mt-24">
             <SectionHeader label={t.stack[lang]} />
@@ -313,7 +314,6 @@ export default function Portfolio() {
           </section>
         </Reveal>
 
-        {/* Education */}
         <Reveal>
           <section id="education" className="scroll-mt-24">
             <SectionHeader label={t.education[lang]} />
@@ -350,7 +350,6 @@ export default function Portfolio() {
           </section>
         </Reveal>
 
-        {/* Contact */}
         <Reveal>
           <section id="contact" className="scroll-mt-24">
             <SectionHeader label={t.contact[lang]} />
@@ -376,6 +375,39 @@ export default function Portfolio() {
                   </a>
                 </Reveal>
               ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal>
+          <section className="scroll-mt-24">
+            <SectionHeader label={t.themeTitle[lang]} />
+            <div className="border border-term-border bg-term-bg-secondary/50 p-4 sm:p-5">
+              <p className="text-term-muted text-xs mb-4">{t.themeHint[lang]}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {Object.values(THEMES).map((item) => {
+                  const isActive = item.name === theme;
+                  return (
+                    <button
+                      key={item.name}
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => setTheme(item.name)}
+                      className={`text-left border px-3 py-2 transition-colors cursor-pointer ${
+                        isActive
+                          ? "border-term-green bg-term-bg text-term-green"
+                          : "border-term-border text-term-text hover:border-term-green"
+                      }`}
+                    >
+                      <p className="text-xs font-semibold">{item.label}</p>
+                      <p className="text-xs text-term-muted mt-1">{item.description}</p>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-term-border mt-3">
+                {t.currentTheme[lang]}: <span className="text-term-green">{theme}</span>
+              </p>
             </div>
           </section>
         </Reveal>

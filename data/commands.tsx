@@ -1,6 +1,5 @@
 import { CommandMap } from "@/types/terminal";
 import AboutOutput from "@/components/output/AboutOutput";
-import CertsOutput from "@/components/output/CertsOutput";
 import ContactOutput from "@/components/output/ContactOutput";
 import EducationOutput from "@/components/output/EducationOutput";
 import ExperienceOutput from "@/components/output/ExperienceOutput";
@@ -39,12 +38,6 @@ export const commands: CommandMap = {
     execute: () => <HelpOutput />,
   },
 
-  about: {
-    name: "about",
-    description: "A bit about me",
-    execute: () => <AboutOutput />,
-  },
-
   whoami: {
     name: "whoami",
     description: "Quick bio",
@@ -58,44 +51,25 @@ export const commands: CommandMap = {
     ),
   },
 
-  "./stack": {
-    name: "./stack",
-    description: "Tech stack with proficiency levels",
-    execute: () => <StackOutput />,
-  },
+  cat: {
+    name: "cat",
+    description: "Display a portfolio section",
+    usage: "cat <section>",
+    execute: (args) => {
+      const section = args[0]?.toLowerCase();
+      if (section === "about") return <AboutOutput />;
+      if (section === "experience") return <ExperienceOutput />;
+      if (section === "projects") return <ProjectsOutput />;
+      if (section === "stack") return <StackOutput />;
+      if (section === "education") return <EducationOutput />;
+      if (section === "contact") return <ContactOutput />;
 
-  experience: {
-    name: "experience",
-    description: "Work experience",
-    aliases: ["exp"],
-    execute: () => <ExperienceOutput />,
-  },
-
-  projects: {
-    name: "projects",
-    description: "Personal & open-source projects",
-    aliases: ["proj"],
-    execute: () => <ProjectsOutput />,
-  },
-
-  education: {
-    name: "education",
-    description: "Academic background",
-    aliases: ["edu"],
-    execute: () => <EducationOutput />,
-  },
-
-  certifications: {
-    name: "certifications",
-    description: "Professional certifications",
-    aliases: ["certs"],
-    execute: () => <CertsOutput />,
-  },
-
-  contact: {
-    name: "contact",
-    description: "How to reach me",
-    execute: () => <ContactOutput />,
+      return (
+        <p className="text-sm text-term-red">
+          cat: {args[0] ?? ""}: no such file. Try: about, experience, projects, stack, education, contact
+        </p>
+      );
+    },
   },
 
   clear: {
@@ -104,7 +78,6 @@ export const commands: CommandMap = {
     execute: () => null,
   },
 
-  // ── DevOps commands ──────────────────────────────────────────────────────
 
   docker: {
     name: "docker",
@@ -170,9 +143,7 @@ export const commands: CommandMap = {
   },
 };
 
-/**
- * Builds a flat lookup map that includes aliases pointing to the same command.
- */
+
 export function buildCommandMap(map: CommandMap): CommandMap {
   const resolved: CommandMap = { ...map };
   for (const cmd of Object.values(map)) {

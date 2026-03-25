@@ -15,8 +15,8 @@ export default function LsOutput() {
   const { lang } = useLanguage();
 
   const hint = {
-    pt: "Use cd <seção> para navegar até ela no portfolio",
-    en: "Use cd <section> to navigate to it in the portfolio",
+    pt: "Use cat <seção> para ler e cd <seção> para navegar no portfolio",
+    en: "Use cat <section> to read and cd <section> to navigate in the portfolio",
   };
 
   return (

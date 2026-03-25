@@ -95,7 +95,6 @@ export default function DoomGame({ visible, onClose }: DoomGameProps) {
     const script = document.createElement("script");
     script.src = "/doom/websockets-doom.js";
     document.body.appendChild(script);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const controls =
@@ -130,7 +129,7 @@ export default function DoomGame({ visible, onClose }: DoomGameProps) {
           <span className="text-term-muted">id Software 1993 — Shareware</span>
         </div>
         <button
-          onClick={onClose}
+          onClick={() => {window.location.reload();}}
           className="text-term-muted hover:text-term-red transition-colors cursor-pointer"
           title={lang === "pt" ? "Fechar" : "Close"}
         >
@@ -151,14 +150,6 @@ export default function DoomGame({ visible, onClose }: DoomGameProps) {
 
         {!ready && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 gap-3">
-            <pre className="text-term-red text-xs leading-none select-none opacity-80">{`
-  _______  ______  ______  __   __
- |  ___  ||  __  ||  __  ||  \\ |  |
- | |   | || |  | || |  | ||   \\|  |
- | |   | || |  | || |  | || |\\    |
- | |___| || |__| || |__| || | \\   |
- |_______||______||______||_|  \\__|
-`}</pre>
             <p className="text-term-green font-mono text-sm animate-pulse">
               {status || (lang === "pt" ? "Inicializando..." : "Initializing...")}
             </p>

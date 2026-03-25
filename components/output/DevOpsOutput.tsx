@@ -243,16 +243,16 @@ const tfResources = [
   },
 ];
 
-const actionColors: Record<string, string> = {
-  add:    "text-term-green",
-  change: "text-term-yellow",
-  remove: "text-term-red",
-};
-
 const actionSymbols: Record<string, string> = {
   add:    "+",
   change: "~",
   remove: "-",
+};
+
+const actionColors: Record<string, string> = {
+  add:    "text-term-green",
+  change: "text-term-blue",
+  remove: "text-term-blue",
 };
 
 export function TerraformPlanOutput() {

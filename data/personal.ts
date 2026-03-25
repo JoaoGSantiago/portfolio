@@ -11,8 +11,8 @@ export const personal = {
   github: "https://github.com/JoaoGSantiago",
   linkedin: "https://linkedin.com/in/joao-gustavo-santiago",
   bio: {
-    pt: "Estudante de Sistemas de Informação com foco em DevOps, Cloud e SRE. Habilidades em Docker, AWS e ferramentas de observabilidade como Prometheus, Grafana e Sentry. Certificado pela Amazon Web Services (AWS Cloud Practitioner).",
-    en: "Information Systems student focused on DevOps, Cloud and SRE. Skilled in Docker, AWS and observability tools such as Prometheus, Grafana and Sentry. AWS Certified Cloud Practitioner.",
+    pt: "Especialista DevOps e Cloud com foco em infraestrutura escalável, automação e SRE. Experiência com Docker, Kubernetes, AWS e ferramentas de observabilidade como Prometheus e Grafana. Certificado pela Amazon Web Services (AWS Cloud Practitioner). Apaixonado por infraestrutura como código e otimização de processos.",
+    en: "DevOps and Cloud specialist focused on scalable infrastructure, automation and SRE. Experience with Docker, Kubernetes, AWS and observability tools such as Prometheus and Grafana. AWS Certified Cloud Practitioner. Passionate about infrastructure as code and process optimization.",
   } as Bilingual,
 };
 
@@ -23,14 +23,12 @@ export interface StackItem {
 
 export interface StackCategory {
   category: Bilingual;
-  icon: string;
   items: StackItem[];
 }
 
 export const stacks: StackCategory[] = [
   {
     category: { pt: "Cloud & Infraestrutura", en: "Cloud & Infrastructure" },
-    icon: "☁",
     items: [
       { name: "AWS (EC2, S3, VPC, IAM)", level: 75 },
       { name: "Terraform", level: 72 },
@@ -39,7 +37,6 @@ export const stacks: StackCategory[] = [
   },
   {
     category: { pt: "Containers & Orquestração", en: "Containers & Orchestration" },
-    icon: "🐳",
     items: [
       { name: "Docker", level: 85 },
       { name: "Kubernetes", level: 50 },
@@ -47,7 +44,6 @@ export const stacks: StackCategory[] = [
   },
   {
     category: { pt: "CI/CD", en: "CI/CD" },
-    icon: "⚙",
     items: [
       { name: "GitHub Actions", level: 75 },
       { name: "GitLab CI", level: 70 },
@@ -56,7 +52,6 @@ export const stacks: StackCategory[] = [
   },
   {
     category: { pt: "Observabilidade & Monitoramento", en: "Observability & Monitoring" },
-    icon: "📊",
     items: [
       { name: "Prometheus", level: 68 },
       { name: "Grafana", level: 70 },
@@ -66,7 +61,6 @@ export const stacks: StackCategory[] = [
   },
   {
     category: { pt: "Scripting & Programação", en: "Scripting & Programming" },
-    icon: "💻",
     items: [
       { name: "Python (Automation)", level: 68 },
       { name: "Bash/Shell", level: 72 },
@@ -74,7 +68,6 @@ export const stacks: StackCategory[] = [
   },
   {
     category: { pt: "Redes & Segurança", en: "Networking & Security" },
-    icon: "🔒",
     items: [
       { name: "TCP/IP", level: 70 },
       { name: "DNS", level: 68 },
