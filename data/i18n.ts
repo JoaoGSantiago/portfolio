@@ -92,7 +92,7 @@ export const i18n = {
     deploy:    { pt: "Simula pipeline CI/CD completo",         en: "Simulate full CI/CD pipeline"     } as T,
     uptime:    { pt: "Uptime e carga do servidor",             en: "Server uptime & load average"     } as T,
     doom:      { pt: "Roda DOOM no terminal",                  en: "Run DOOM in the terminal"         } as T,
-    snake:     { pt: "Jogo da cobrinha no portfolio 🐍",       en: "Snake game in the portfolio 🐍"   } as T,
+    snake:     { pt: "Jogo da cobrinha no portfolio",          en: "Snake game in the portfolio"   } as T,
     usageDocker: {
       pt: 'Uso: docker ps | docker images | docker compose up -d',
       en: 'Usage: docker ps | docker images | docker compose up -d',

@@ -125,7 +125,7 @@ export function SnakeGame() {
       ctx.font = "bold 15px monospace";
       ctx.textAlign = "center";
       ctx.fillText(
-        lang === "pt" ? "🐍 COBRA CONTAINER" : "🐍 CONTAINER SNAKE",
+        lang === "pt" ? "COBRA CONTAINER" : "CONTAINER SNAKE",
         W / 2, H / 2 - 14,
       );
       ctx.fillStyle = muted;

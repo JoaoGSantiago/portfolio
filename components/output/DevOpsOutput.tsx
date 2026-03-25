@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { i18n } from "@/data/i18n";
+import { unlockSnake } from "@/lib/gameState";
 
 const dockerContainers = [
   { id: "a1b2c3d4", image: "nginx:1.25-alpine",              status: "Up 2 hours",  ports: "0.0.0.0:80->80/tcp",     name: "nginx-proxy"    },
@@ -475,6 +476,7 @@ export function DockerComposeOutput() {
       } else {
         clearInterval(interval);
         setDone(true);
+        unlockSnake();
         unlock();
       }
     }, 750);
@@ -506,8 +508,8 @@ export function DockerComposeOutput() {
           </p>
           <p className="text-term-cyan">
             {lang === "pt"
-              ? "🐍 O container snake-game está rodando! Digite "
-              : "🐍 snake-game container is running! Type "}
+              ? "O container snake-game está rodando! Digite "
+              : "snake-game container is running! Type "}
             <span className="text-term-yellow font-bold">snake</span>
             {lang === "pt" ? " para jogar." : " to play."}
           </p>

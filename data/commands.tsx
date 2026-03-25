@@ -1,4 +1,5 @@
 import { CommandMap } from "@/types/terminal";
+import { isSnakeUnlocked } from "@/lib/gameState";
 import AboutOutput from "@/components/output/AboutOutput";
 import ContactOutput from "@/components/output/ContactOutput";
 import EducationOutput from "@/components/output/EducationOutput";
@@ -121,13 +122,25 @@ export const commands: CommandMap = {
     name: "snake",
     description: "Play Snake in the portfolio",
     execute: () => {
+      if (!isSnakeUnlocked()) {
+        return (
+          <p className="text-sm">
+            <span className="text-term-red">Erro: </span>
+            <span className="text-term-muted">container </span>
+            <span className="text-term-yellow">snake-game</span>
+            <span className="text-term-muted"> não está rodando. Execute </span>
+            <span className="text-term-green">docker compose up -d</span>
+            <span className="text-term-muted"> primeiro.</span>
+          </p>
+        );
+      }
       setTimeout(() => {
         globalThis.dispatchEvent(new CustomEvent("portfolio:navigate", { detail: { section: "" } }));
         setTimeout(() => globalThis.dispatchEvent(new CustomEvent("snake:open")), 300);
       }, 0);
       return (
         <p className="text-sm">
-          <span className="text-term-green">🐍 Abrindo Snake no portfolio...</span>
+          <span className="text-term-green"> Abrindo Snake no portfolio...</span>
           <span className="text-term-muted"> pressione ESC para fechar.</span>
         </p>
       );

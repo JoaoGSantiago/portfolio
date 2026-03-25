@@ -28,7 +28,7 @@ export default function SnakeModal({ visible, onClose }: SnakeModalProps) {
       <div className="bg-term-bg border border-term-border rounded-lg p-4 shadow-2xl">
         <div className="flex items-center justify-between mb-3">
           <span className="text-term-green text-sm font-mono font-semibold">
-            🐍 {lang === "pt" ? "Container Snake" : "Container Snake"}
+             {lang === "pt" ? "Container Snake" : "Container Snake"}
           </span>
           <button
             onClick={onClose}
