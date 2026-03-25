@@ -426,7 +426,6 @@ export function UptimeOutput() {
 }
 
 
-// ─── docker compose up -d ────────────────────────────────────────────────────
 
 type ComposeLine = { id: string; text: string; color: string };
 

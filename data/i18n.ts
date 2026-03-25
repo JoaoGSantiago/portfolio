@@ -11,8 +11,8 @@ export const i18n = {
     } as T,
     try: { pt: "Tente", en: "Try" } as T,
     toExploreStack: {
-      pt: "para começar a explorar projetos, experiência profissional, certificações e muito mais.",
-      en: "to start exploring projects, work experience, certifications and much more.",
+      pt: "para listar as seções disponíveis, depois use cat <seção> para ler o conteúdo.",
+      en: "to list available sections, then use cat <section> to read the content.",
     } as T,
   },
   help: {
