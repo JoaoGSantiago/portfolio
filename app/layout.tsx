@@ -11,9 +11,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "João Gustavo | DevOps Engineer",
+  title: "João Gustavo | DevOps",
   description:
-    "Terminal-style portfolio of João Gustavo Santiago de Lima — DevOps Engineer specializing in Cloud, Kubernetes, and CI/CD.",
+    "Terminal-style portfolio of João Gustavo Santiago de Lima — DevOps specializing in Cloud, Kubernetes, and CI/CD.",
 };
 
 export default function RootLayout({

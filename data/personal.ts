@@ -3,7 +3,7 @@ export type Bilingual = { pt: string; en: string };
 export const personal = {
   name: "João Gustavo Santiago de Lima",
   shortName: "joao",
-  title: "DevOps Engineer",
+  title: "DevOps",
   subtitle: "Cloud · Infrastructure · SRE",
   location: "Arapiraca-AL, Brazil",
   email: "joaogsantiagol@gmail.com",
@@ -214,7 +214,7 @@ export const education: Education[] = [
   {
     degree: {
       pt: "Curso Técnico Integrado em Eletrotécnica",
-      en: "Integrated Technical Course in Electrical Engineering",
+      en: "Integrated Technical Course in Electrotechnology",
     },
     institution: "IFAL – Instituto Federal de Alagoas",
     period: {
