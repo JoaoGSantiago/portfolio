@@ -37,7 +37,7 @@ export function DockerPsOutput() {
                 <td className="pr-4 text-term-muted">{c.id}</td>
                 <td className="pr-4 text-term-blue">{c.image}</td>
                 <td className="pr-4 text-term-green">{c.status}</td>
-                <td className="pr-4 text-term-yellow">{c.ports}</td>
+                <td className="pr-4 text-term-blue">{c.ports}</td>
                 <td className="text-term-text font-semibold">{c.name}</td>
               </tr>
             ))}
@@ -83,7 +83,7 @@ export function DockerImagesOutput() {
                 <td className="pr-4 text-term-green">{img.tag}</td>
                 <td className="pr-4 text-term-muted">{img.id}</td>
                 <td className="pr-4 text-term-muted">{img.created}</td>
-                <td className="text-term-yellow">{img.size}</td>
+                <td className="text-term-blue">{img.size}</td>
               </tr>
             ))}
           </tbody>
@@ -143,7 +143,7 @@ export function KubectlPodsOutput() {
                 <td className={`pr-4 ${pod.status === "Running" ? "text-term-green" : "text-term-red"}`}>
                   {pod.status}
                 </td>
-                <td className={`pr-4 ${pod.restarts > 0 ? "text-term-yellow" : "text-term-muted"}`}>
+                <td className={`pr-4 ${pod.restarts > 0 ? "text-term-blue" : "text-term-muted"}`}>
                   {pod.restarts}
                 </td>
                 <td className="text-term-muted">{pod.age}</td>
@@ -298,7 +298,7 @@ export function TerraformPlanOutput() {
                   <span className={`${color} w-2 inline-block`}>{symbol}</span>
                   <span className="text-term-green ml-2">{attr.key}</span>
                   <span className="text-term-muted"> = </span>
-                  <span className="text-term-yellow">{attr.value}</span>
+                  <span className="text-term-blue">{attr.value}</span>
                 </p>
               ))}
               <p className="text-term-muted">{"  }"}</p>
@@ -312,7 +312,7 @@ export function TerraformPlanOutput() {
           <span className="text-term-text font-semibold">Plan: </span>
           <span className="text-term-green">{adds} to add</span>
           <span className="text-term-muted">, </span>
-          <span className="text-term-yellow">{changes} to change</span>
+          <span className="text-term-blue">{changes} to change</span>
           <span className="text-term-muted">, </span>
           <span className="text-term-red">{removes} to destroy</span>
           <span className="text-term-muted">.</span>
@@ -401,9 +401,9 @@ export function UptimeOutput() {
         <span className="text-term-muted">,  1 user,  load average: </span>
         <span className="text-term-green">0.42</span>
         <span className="text-term-muted">, </span>
-        <span className="text-term-yellow">0.38</span>
+        <span className="text-term-blue">0.38</span>
         <span className="text-term-muted">, </span>
-        <span className="text-term-yellow">0.31</span>
+        <span className="text-term-blue">0.31</span>
       </p>
       <div className="text-xs text-term-muted border-t border-term-border pt-1 mt-1 space-y-0.5">
         <p>
@@ -418,7 +418,7 @@ export function UptimeOutput() {
         </p>
         <p>
           <span className="text-term-text">DISK </span>
-          <span className="text-term-yellow">█████████░░░░░░░░░░░</span>
+          <span className="text-term-blue">█████████░░░░░░░░░░░</span>
           <span className="text-term-muted"> 48%  (48GB / 100GB)</span>
         </p>
       </div>
@@ -440,7 +440,7 @@ const composeMessages: ComposeLine[] = [
   { id: "c06", text: " ⠿ Container portfolio-redis      Pulling image...",            color: "text-term-blue"   },
   { id: "c07", text: "   → docker.io/library/redis:7.2-alpine — 38 MB",              color: "text-term-muted"  },
   { id: "c08", text: " ✔ Container portfolio-redis      Started",                     color: "text-term-green"  },
-  { id: "c09", text: " ⠿ Container portfolio-api        Building...",                 color: "text-term-yellow" },
+  { id: "c09", text: " ⠿ Container portfolio-api        Building...",                 color: "text-term-blue" },
   { id: "c10", text: "   → Step 1/8  FROM node:20-alpine",                           color: "text-term-muted"  },
   { id: "c11", text: "   → Step 2/8  WORKDIR /app",                                  color: "text-term-muted"  },
   { id: "c12", text: "   → Step 3/8  COPY package*.json ./",                         color: "text-term-muted"  },
@@ -503,14 +503,14 @@ export function DockerComposeOutput() {
           </p>
           <p className="text-term-muted">
             {lang === "pt" ? "Dica: rode " : "Tip: run "}
-            <span className="text-term-yellow font-bold">docker ps</span>
+            <span className="text-term-blue font-bold">docker ps</span>
             {lang === "pt" ? " para ver os containers ativos" : " to see active containers"}
           </p>
           <p className="text-term-cyan">
             {lang === "pt"
               ? "O container snake-game está rodando! Digite "
               : "snake-game container is running! Type "}
-            <span className="text-term-yellow font-bold">snake</span>
+            <span className="text-term-blue font-bold">snake</span>
             {lang === "pt" ? " para jogar." : " to play."}
           </p>
         </div>
@@ -681,7 +681,7 @@ export function KubectlApplyOutput() {
           )}
 
           {phase === "impact" && (
-            <div className="text-term-yellow font-mono leading-tight">
+            <div className="text-term-blue font-mono leading-tight">
               {IMPACT_ART.map((ln) => <p key={ln} className="whitespace-pre">{ln}</p>)}
               <p className="text-term-muted mt-1">{"~".repeat(SCENE_W)}</p>
             </div>

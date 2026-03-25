@@ -47,7 +47,7 @@ export const commands: CommandMap = {
     description: "Quick bio",
     execute: () => (
       <p className="text-sm">
-        <span className="text-term-yellow">{personal.name}</span>
+        <span className="text-term-blue">{personal.name}</span>
         <span className="text-term-muted"> — </span>
         <span className="text-term-text">{personal.title}</span>
         <span className="text-term-muted"> · {personal.location}</span>
@@ -127,7 +127,7 @@ export const commands: CommandMap = {
           <p className="text-sm">
             <span className="text-term-red">Erro: </span>
             <span className="text-term-muted">container </span>
-            <span className="text-term-yellow">snake-game</span>
+            <span className="text-term-blue">snake-game</span>
             <span className="text-term-muted"> não está rodando. Execute </span>
             <span className="text-term-green">docker compose up -d</span>
             <span className="text-term-muted"> primeiro.</span>

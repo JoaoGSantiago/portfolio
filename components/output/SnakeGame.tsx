@@ -248,7 +248,7 @@ export function SnakeGame() {
         <span className="text-term-green">$ snake</span>
         <span className="text-term-muted">
           {lang === "pt" ? "Pontuação:" : "Score:"}
-          <span className="text-term-yellow font-bold ml-1">{score}</span>
+          <span className="text-term-blue font-bold ml-1">{score}</span>
         </span>
       </div>
 

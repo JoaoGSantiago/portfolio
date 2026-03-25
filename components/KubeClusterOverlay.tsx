@@ -53,7 +53,7 @@ const DESCRIBE_LINES = [
   { label: "Namespace:",   value: "kube-system",              color: "text-term-blue"   },
   { label: "Node:",        value: "node-worker-01",           color: "text-term-text"   },
   { label: "Status:",      value: "CrashLoopBackOff",         color: "text-term-red"    },
-  { label: "Restarts:",    value: "47",                       color: "text-term-yellow" },
+  { label: "Restarts:",    value: "47",                       color: "text-term-blue" },
   { label: "Image:",       value: "docker.io/whale:latest",   color: "text-term-blue"   },
   { label: "Reason:",      value: "OOMKilled by Helm",        color: "text-term-red"    },
   { label: "Message:",     value: "Docker whale tried to board the K8s ship. It did not go well.", color: "text-term-muted" },
@@ -64,7 +64,7 @@ const DESCRIBE_LINES = [
 function StatusBadge({ status, pulse }: { status: PodStatus; pulse?: boolean }) {
   const colors: Record<PodStatus, string> = {
     Running:           "text-term-green",
-    Pending:           "text-term-yellow",
+    Pending:           "text-term-blue",
     CrashLoopBackOff:  "text-term-red",
     Terminating:       "text-term-muted",
   };
@@ -200,7 +200,7 @@ export default function KubeClusterOverlay({ visible, onClose }: KubeClusterOver
             <span className="text-term-blue text-sm font-bold">☸ Kubernetes Cluster</span>
             <span className="text-term-muted">portfolio-cluster</span>
             <span className="text-term-green">● Nodes: 3/3</span>
-            <span className={running === pods.length ? "text-term-green" : "text-term-yellow"}>
+            <span className={running === pods.length ? "text-term-green" : "text-term-blue"}>
               ● Pods: {running}/{pods.length}
             </span>
           </div>
@@ -240,7 +240,7 @@ export default function KubeClusterOverlay({ visible, onClose }: KubeClusterOver
                     </p>
                     <StatusBadge status={pod.status} pulse={pod.status === "CrashLoopBackOff" || pod.status === "Pending"} />
                     {pod.restarts > 0 && (
-                      <span className="text-term-yellow ml-2">{pod.restarts}↺</span>
+                      <span className="text-term-blue ml-2">{pod.restarts}↺</span>
                     )}
                     <p className="text-term-muted text-xs truncate">{pod.namespace}</p>
                   </div>
@@ -258,7 +258,7 @@ export default function KubeClusterOverlay({ visible, onClose }: KubeClusterOver
                 ⚠ whale-battle-x9z3q
                 <span className="text-term-muted font-normal ml-2">kube-system</span>
                 <StatusBadge status={whale.status} pulse />
-                {whale.restarts > 0 && <span className="text-term-yellow ml-2">{whale.restarts}↺</span>}
+                {whale.restarts > 0 && <span className="text-term-blue ml-2">{whale.restarts}↺</span>}
               </span>
               <div className="flex gap-2">
                 <button

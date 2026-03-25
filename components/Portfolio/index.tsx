@@ -89,7 +89,7 @@ function SectionHeader({ label }: { readonly label: string }) {
 
 function projectStatusClass(status: string): string {
   if (status === "active") return "border-term-green text-term-green";
-  if (status === "wip") return "border-term-yellow text-term-yellow";
+  if (status === "wip") return "border-term-blue text-term-blue";
   return "border-term-muted text-term-muted";
 }
 
