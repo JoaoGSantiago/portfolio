@@ -42,7 +42,6 @@ export const stacks: StackCategory[] = [
     icon: "🐳",
     items: [
       { name: "Docker", level: 85 },
-      { name: "Docker Compose", level: 83 },
       { name: "Kubernetes", level: 50 },
     ],
   },

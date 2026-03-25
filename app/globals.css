@@ -55,7 +55,7 @@
 @theme inline {
   --color-background: var(--term-bg);
   --color-foreground: var(--term-text);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-mono);
   --font-mono: var(--font-geist-mono);
 
   --color-term-bg: var(--term-bg);

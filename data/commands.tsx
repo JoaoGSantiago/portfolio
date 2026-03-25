@@ -21,6 +21,8 @@ import {
   UptimeOutput,
 } from "@/components/output/DevOpsOutput";
 import DoomOutput from "@/components/output/DoomOutput";
+import LsOutput from "@/components/output/LsOutput";
+import CdOutput from "@/components/output/CdOutput";
 import { personal } from "@/data/personal";
 
 export const commands: CommandMap = {
@@ -152,6 +154,19 @@ export const commands: CommandMap = {
     name: "./doom",
     description: "Run DOOM in the terminal",
     execute: () => <DoomOutput />,
+  },
+
+  ls: {
+    name: "ls",
+    description: "List portfolio sections",
+    execute: () => <LsOutput />,
+  },
+
+  cd: {
+    name: "cd",
+    description: "Navigate to a portfolio section",
+    usage: "cd <section>",
+    execute: (args) => <CdOutput section={args[0] ?? ""} />,
   },
 };
 
