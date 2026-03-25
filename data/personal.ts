@@ -11,8 +11,8 @@ export const personal = {
   github: "https://github.com/JoaoGSantiago",
   linkedin: "https://linkedin.com/in/joao-gustavo-santiago",
   bio: {
-    pt: "Estudante de Sistemas de Informação com foco em DevOps, Cloud e SRE. Experiência com Docker, AWS e ferramentas de monitoramento como Prometheus, Grafana e Sentry. Certificado pela Amazon Web Services (AWS Cloud Practitioner). Busco oportunidade júnior para atuar em times ágeis.",
-    en: "Information Systems student focused on DevOps, Cloud and SRE. Experienced with Docker, AWS and monitoring tools such as Prometheus, Grafana and Sentry. AWS Certified Cloud Practitioner. Seeking a junior opportunity to work in agile teams.",
+    pt: "Estudante de Sistemas de Informação com foco em DevOps, Cloud e SRE. Habilidades em Docker, AWS e ferramentas de observabilidade como Prometheus, Grafana e Sentry. Certificado pela Amazon Web Services (AWS Cloud Practitioner).",
+    en: "Information Systems student focused on DevOps, Cloud and SRE. Skilled in Docker, AWS and observability tools such as Prometheus, Grafana and Sentry. AWS Certified Cloud Practitioner.",
   } as Bilingual,
 };
 
@@ -108,19 +108,23 @@ export const experiences: Experience[] = [
     },
     description: [
       {
-        pt: "Implementei Docker e Docker Compose em projetos de clientes, reduzindo tempo de setup de ambientes de desenvolvimento em 45% em média",
-        en: "Implemented Docker and Docker Compose in client projects, reducing development environment setup time by 45% on average",
+        pt: "Implementei Docker e Docker Compose em projetos de clientes, padronizando ambientes de desenvolvimento e eliminando inconsistências entre máquinas",
+        en: "Implemented Docker and Docker Compose in client projects, standardizing development environments and eliminating cross-machine inconsistencies",
       },
       {
-        pt: "Configurei Sentry para monitoramento de erros em produção, aumentando em 25% a detecção proativa de falhas e reduzindo tempo de resposta",
-        en: "Configured Sentry for production error monitoring, increasing proactive failure detection by 25% and reducing response time",
+        pt: "Configurei stack de observabilidade completa com Prometheus, Grafana, Loki e OpenTelemetry, centralizando métricas, logs e traces em um único painel",
+        en: "Set up a full observability stack with Prometheus, Grafana, Loki and OpenTelemetry, centralizing metrics, logs and traces in a single dashboard",
       },
       {
-        pt: "Colaborei em ajustes no backend, aplicando boas práticas que reduziram riscos de vulnerabilidades e melhoraram performance em requisições",
-        en: "Collaborated on backend adjustments, applying best practices that reduced vulnerability risks and improved request performance",
+        pt: "Integrei Sentry para rastreamento de erros em produção, aumentando a visibilidade sobre falhas e acelerando o ciclo de resposta a incidentes",
+        en: "Integrated Sentry for production error tracking, improving failure visibility and accelerating incident response cycles",
+      },
+      {
+        pt: "Colaborei em ajustes no backend aplicando boas práticas de segurança e performance, com foco em redução de superfície de ataque e confiabilidade",
+        en: "Collaborated on backend improvements applying security and performance best practices, focused on reducing attack surface and improving reliability",
       },
     ],
-    tech: ["Docker", "Docker Compose", "Sentry", "Linux"],
+    tech: ["Docker", "Docker Compose", "Prometheus", "Grafana", "Loki", "OpenTelemetry", "Sentry", "Linux"],
   },
 ];
 
@@ -155,13 +159,23 @@ export const projects: Project[] = [
     status: "active",
   },
   {
+    name: "stack-observabilidade",
+    description: {
+      pt: "Stack de observabilidade completa integrada a uma aplicação Next.js. Implementa rastreamento distribuído com OpenTelemetry e Tempo, métricas com Prometheus, agregação de logs com Loki e dashboards no Grafana — tudo orquestrado via Docker Compose.",
+      en: "Full observability stack integrated with a Next.js application. Implements distributed tracing with OpenTelemetry and Tempo, metrics with Prometheus, log aggregation with Loki and dashboards in Grafana — all orchestrated via Docker Compose.",
+    },
+    tech: ["OpenTelemetry", "Tempo", "Prometheus", "Loki", "Grafana", "Next.js", "PostgreSQL", "Docker Compose"],
+    github: "https://github.com/JoaoGSantiago/stack-observabilidade",
+    status: "active",
+  },
+  {
     name: "portfolio-joao",
     description: {
       pt: "Este portfolio estilo terminal. Desenvolvido com Next.js + React + Tailwind CSS v4. Digite 'help' para explorar.",
       en: "This terminal-style portfolio. Built with Next.js + React + Tailwind CSS v4. Type 'help' to explore.",
     },
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS v4"],
-    github: "https://github.com/JoaoGSantiago/portfolio-joao",
+    github: "https://github.com/JoaoGSantiago/portfolio",
     status: "active",
   },
 ];

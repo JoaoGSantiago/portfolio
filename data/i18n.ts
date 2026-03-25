@@ -81,9 +81,9 @@ export const i18n = {
       learning: { pt: "Aprendendo", en: "Learning" } as T,
     },
     legend: {
-      expert: { pt: "Expert (90%+)", en: "Expert (90%+)" } as T,
-      advanced: { pt: "Avançado (75%+)", en: "Advanced (75%+)" } as T,
-      intermediate: { pt: "Intermediário (60%+)", en: "Intermediate (60%+)" } as T,
+      expert: { pt: "Expert", en: "Expert" } as T,
+      advanced: { pt: "Avançado", en: "Advanced" } as T,
+      intermediate: { pt: "Intermediário", en: "Intermediate" } as T,
       learning: { pt: "Aprendendo", en: "Learning" } as T,
     },
   },

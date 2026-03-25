@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* ── Terminal color tokens ─────────────────────────────────────────── */
 :root {
   --term-bg: #0d1117;
   --term-bg-secondary: #161b22;
@@ -17,7 +16,6 @@
 
 }
 
-/* ── Tailwind v4 theme extension ───────────────────────────────────── */
 @theme inline {
   --color-background: var(--term-bg);
   --color-foreground: var(--term-text);
@@ -41,7 +39,6 @@
   --color-term-dot-green: var(--term-dot-green);
 }
 
-/* ── Base styles ───────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -64,7 +61,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Terminal scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -82,7 +78,6 @@ body {
   background: var(--term-text-muted);
 }
 
-/* ── Terminal cursor blink ─────────────────────────────────────────── */
 @keyframes blink {
   0%,
   100% {
@@ -97,7 +92,6 @@ body {
   animation: blink 1s step-end infinite;
 }
 
-/* ── Progress bar fill animation ──────────────────────────────────── */
 @keyframes fill-bar {
   from {
     width: 0%;
@@ -108,13 +102,11 @@ body {
   animation: fill-bar 0.8s ease-out forwards;
 }
 
-/* ── Text selection ────────────────────────────────────────────────── */
 ::selection {
   background-color: var(--term-blue);
   color: var(--term-bg);
 }
 
-/* ── Themes ────────────────────────────────────────────────────────── */
 
 /* Dracula */
 .theme-dracula {

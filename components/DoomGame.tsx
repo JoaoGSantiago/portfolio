@@ -28,8 +28,12 @@ export default function DoomGame({ visible, onClose }: DoomGameProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const win = globalThis as unknown as Window;
     if (visible) {
+      win.Module?.resumeMainLoop?.();
       setTimeout(() => canvasRef.current?.focus(), 50);
+    } else {
+      win.Module?.pauseMainLoop?.();
     }
   }, [visible]);
 
