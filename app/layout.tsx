@@ -22,14 +22,12 @@ export const metadata: Metadata = {
     url: "https://joaogsantiago.vercel.app",
     siteName: "João Gustavo · Portfolio",
     type: "website",
-    images: [{ url: "/aba.png" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "João Gustavo | DevOps & Cloud",
     description:
       "DevOps and Cloud specialist focused on scalable infrastructure, automation and SRE.",
-    images: ["/aba.png"],
   },
 };
 
