@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import type { IconType } from "react-icons";
@@ -99,6 +101,39 @@ function educationBorderClass(status: string): string {
   return "border-term-muted";
 }
 
+function Stars() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => setReady(true));
+  }, []);
+
+  if (!ready) return null;
+
+  return (
+    <Particles
+      id="hero-stars"
+      className="absolute inset-0 pointer-events-none"
+      options={{
+        fullScreen: { enable: false },
+        background: { color: { value: "transparent" } },
+        fpsLimit: 40,
+        particles: {
+          number:  { value: 90, density: { enable: true } },
+          color:   { value: "#c9d1d9" },
+          opacity: { value: { min: 0.05, max: 0.4 } },
+          size:    { value: { min: 0.5, max: 1.5 } },
+          move:    { enable: false },
+          shape:   { type: "circle" },
+        },
+        detectRetina: true,
+      }}
+    />
+  );
+}
+
 function Tag({ name }: { readonly name: string }) {
   return (
     <span className="text-xs px-2 py-0.5 border border-term-border text-term-muted font-mono">
@@ -149,6 +184,7 @@ export default function Portfolio() {
     <div className={`min-h-screen bg-term-bg text-term-text font-mono ${themeClass}`}>
 
       <section className="relative min-h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
+        <Stars />
         <div
           className="absolute inset-0 pointer-events-none"
           style={{

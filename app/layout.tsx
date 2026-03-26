@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "João Gustavo | DevOps",
   description:
-    "Terminal-style portfolio of João Gustavo Santiago de Lima — DevOps specializing in Cloud, Kubernetes, and CI/CD.",
+    "portfolio of João Gustavo.",
   icons: { icon: "/aba.png" },
 };
 
