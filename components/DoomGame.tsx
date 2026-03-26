@@ -144,6 +144,7 @@ export default function DoomGame({ visible, onClose }: DoomGameProps) {
           tabIndex={0}
           width={800}
           height={600}
+          style={{ width: "100%", height: "auto", maxWidth: "800px", touchAction: "none" }}
           className="block bg-black outline-none"
           onContextMenu={(e) => e.preventDefault()}
         />

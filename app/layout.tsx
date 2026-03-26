@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "João Gustavo | DevOps",
   description:
     "Terminal-style portfolio of João Gustavo Santiago de Lima — DevOps specializing in Cloud, Kubernetes, and CI/CD.",
+  icons: { icon: "/aba.png" },
 };
 
 export default function RootLayout({

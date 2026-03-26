@@ -103,6 +103,12 @@ export function DockerUsageHint() {
 }
 
 
+function nsColorClass(ns: string) {
+  if (ns === "production") return "text-term-blue";
+  if (ns === "monitoring") return "text-term-purple";
+  return "text-term-muted";
+}
+
 const kubePods = [
   { ns: "production",  name: "api-deploy-7d9f8b-xk2lp",    ready: "1/1", status: "Running",           restarts: 0,  age: "2d5h" },
   { ns: "production",  name: "api-deploy-7d9f8b-mn3qr",    ready: "1/1", status: "Running",           restarts: 0,  age: "2d5h" },
@@ -135,7 +141,7 @@ export function KubectlPodsOutput() {
           <tbody>
             {kubePods.map((pod) => (
               <tr key={pod.name}>
-                <td className={`pr-4 ${pod.ns === "production" ? "text-term-blue" : pod.ns === "monitoring" ? "text-term-purple" : "text-term-muted"}`}>
+                <td className={`pr-4 ${nsColorClass(pod.ns)}`}>
                   {pod.ns}
                 </td>
                 <td className="pr-4 text-term-text">{pod.name}</td>
@@ -249,6 +255,12 @@ const tfResources = [
   },
 ];
 
+function actionLabel(action: string) {
+  if (action === "add")    return "created";
+  if (action === "change") return "updated in-place";
+  return "destroyed";
+}
+
 const actionSymbols: Record<string, string> = {
   add:    "+",
   change: "~",
@@ -283,7 +295,7 @@ export function TerraformPlanOutput() {
               <p className="text-term-muted">
                 # {res.type}.{res.name} will be{" "}
                 <span className={color}>
-                  {res.action === "add" ? "created" : res.action === "change" ? "updated in-place" : "destroyed"}
+                  {actionLabel(res.action)}
                 </span>
               </p>
               <p>
@@ -460,28 +472,49 @@ const composeMessages: ComposeLine[] = [
 const lock   = (): void => { globalThis.dispatchEvent(new CustomEvent("terminal:lock")); };
 const unlock = (): void => { globalThis.dispatchEvent(new CustomEvent("terminal:unlock")); };
 
+/** Registers a terminal:cancel listener that clears an interval and marks the component as cancelled. */
+function useCancelHandler(
+  intervalRef: React.RefObject<ReturnType<typeof setInterval> | null>,
+  setCancelled: (v: boolean) => void,
+) {
+  useEffect(() => {
+    const handler = () => {
+      if (intervalRef.current != null) clearInterval(intervalRef.current);
+      setCancelled(true);
+      unlock();
+    };
+    globalThis.addEventListener("terminal:cancel", handler);
+    return () => globalThis.removeEventListener("terminal:cancel", handler);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+}
+
 export function DockerComposeOutput() {
   const { lang } = useLanguage();
-  const [shown,  setShown]  = useState<ComposeLine[]>([]);
-  const [done,   setDone]   = useState(false);
-  const idxRef = useRef(0);
+  const [shown,     setShown]     = useState<ComposeLine[]>([]);
+  const [done,      setDone]      = useState(false);
+  const [cancelled, setCancelled] = useState(false);
+  const idxRef      = useRef(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     lock();
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       const line = composeMessages[idxRef.current];
       if (line) {
         idxRef.current += 1;
         setShown((prev) => [...prev, line]);
       } else {
-        clearInterval(interval);
+        clearInterval(intervalRef.current!);
         setDone(true);
         unlockSnake();
         unlock();
       }
     }, 750);
-    return () => { clearInterval(interval); unlock(); };
+    return () => { clearInterval(intervalRef.current!); unlock(); };
   }, []);
+
+  useCancelHandler(intervalRef, setCancelled);
 
   return (
     <div className="text-xs font-mono space-y-0.5">
@@ -491,7 +524,11 @@ export function DockerComposeOutput() {
         <p key={line.id} className={line.color}>{line.text}</p>
       ))}
 
-      {done && (
+      {cancelled && (
+        <p className="text-term-red font-bold mt-1">^C</p>
+      )}
+
+      {done && !cancelled && (
         <div className="border-t border-term-border pt-2 mt-1 space-y-1">
           <p className="text-term-green font-semibold">
             ✔ {lang === "pt" ? "Todos os containers iniciados com sucesso!" : "All containers started successfully!"}
@@ -593,10 +630,12 @@ const applySteps: ApplyStep[] = [
 
 export function KubectlApplyOutput() {
   const { lang } = useLanguage();
-  const [phase,    setPhase]    = useState<"deploy" | "whale" | "impact" | "aftermath" | "done">("deploy");
-  const [frameIdx, setFrameIdx] = useState(0);
-  const [steps,    setSteps]    = useState<ApplyStep[]>([]);
-  const stepRef = useRef(0);
+  const [phase,     setPhase]     = useState<"deploy" | "whale" | "impact" | "aftermath" | "done">("deploy");
+  const [frameIdx,  setFrameIdx]  = useState(0);
+  const [steps,     setSteps]     = useState<ApplyStep[]>([]);
+  const [cancelled, setCancelled] = useState(false);
+  const stepRef      = useRef(0);
+  const cancelledRef = useRef(false);
 
   // Lock terminal for the whole animation
   useEffect(() => {
@@ -604,10 +643,21 @@ export function KubectlApplyOutput() {
     return () => unlock();
   }, []);
 
+  useEffect(() => {
+    const onCancel = () => {
+      cancelledRef.current = true;
+      setCancelled(true);
+      unlock();
+    };
+    globalThis.addEventListener("terminal:cancel", onCancel);
+    return () => globalThis.removeEventListener("terminal:cancel", onCancel);
+  }, []);
+
   // Phase 1: show apply steps
   useEffect(() => {
     if (phase !== "deploy") return;
     const t = setInterval(() => {
+      if (cancelledRef.current) { clearInterval(t); return; }
       const item = applySteps[stepRef.current];
       if (item) {
         stepRef.current += 1;
@@ -622,9 +672,10 @@ export function KubectlApplyOutput() {
 
   // Phase 2: animate whale approaching
   useEffect(() => {
-    if (phase !== "whale") return;
+    if (phase !== "whale" || cancelledRef.current) return;
     setFrameIdx(0);
     const t = setInterval(() => {
+      if (cancelledRef.current) { clearInterval(t); return; }
       setFrameIdx((f: number) => {
         const next = f + 1;
         if (next >= WHALE_FRAMES.length) {
@@ -640,14 +691,14 @@ export function KubectlApplyOutput() {
 
   // Phase 3: impact pause → aftermath
   useEffect(() => {
-    if (phase !== "impact") return;
+    if (phase !== "impact" || cancelledRef.current) return;
     const t = setTimeout(() => setPhase("aftermath"), 900);
     return () => clearTimeout(t);
   }, [phase]);
 
   // Phase 4: aftermath → done
   useEffect(() => {
-    if (phase !== "aftermath") return;
+    if (phase !== "aftermath" || cancelledRef.current) return;
     const t = setTimeout(() => {
       setPhase("done");
       globalThis.dispatchEvent(new CustomEvent("terminal:unlock"));
@@ -665,7 +716,11 @@ export function KubectlApplyOutput() {
         <p key={s.id} className={s.color}>{s.text}</p>
       ))}
 
-      {(phase === "whale" || phase === "impact" || phase === "aftermath") && (
+      {cancelled && (
+        <p className="text-term-red font-bold mt-1">^C</p>
+      )}
+
+      {!cancelled && (phase === "whale" || phase === "impact" || phase === "aftermath") && (
         <div className="border border-term-border rounded bg-term-bg-secondary p-2 mt-1 space-y-0">
           <p className="text-term-muted text-xs mb-1">
             {lang === "pt" ? "# detectando conflito de orquestração..." : "# detecting orchestration conflict..."}
@@ -698,7 +753,7 @@ export function KubectlApplyOutput() {
         </div>
       )}
 
-      {phase === "done" && (
+      {phase === "done" && !cancelled && (
         <div className="border-t border-term-border pt-2 space-y-1">
           <p className="text-term-green font-semibold">
             ✔ {lang === "pt" ? "Deploy concluído (com... incidentes)" : "Deploy complete (with... incidents)"}
@@ -750,9 +805,11 @@ function scheduleRain() {
 
 export function TerraformInitOutput() {
   const { lang } = useLanguage();
-  const [shown, setShown] = useState<TfInitLine[]>([]);
-  const [done,  setDone]  = useState(false);
-  const idxRef = useRef(0);
+  const [shown,     setShown]     = useState<TfInitLine[]>([]);
+  const [done,      setDone]      = useState(false);
+  const [cancelled, setCancelled] = useState(false);
+  const idxRef      = useRef(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     lock();
@@ -760,20 +817,22 @@ export function TerraformInitOutput() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       const item = tfInitMessages[idxRef.current];
       if (item) {
         idxRef.current += 1;
         setShown((p) => [...p, item]);
       } else {
-        clearInterval(interval);
+        clearInterval(intervalRef.current!);
         setDone(true);
         unlock();
         scheduleRain();
       }
     }, 650);
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalRef.current!);
   }, []);
+
+  useCancelHandler(intervalRef, setCancelled);
 
   return (
     <div className="text-xs font-mono space-y-0.5">
@@ -783,7 +842,11 @@ export function TerraformInitOutput() {
         <p key={line.id} className={line.color || "text-term-muted"}>{line.text || "\u00a0"}</p>
       ))}
 
-      {done && (
+      {cancelled && (
+        <p className="text-term-red font-bold mt-1">^C</p>
+      )}
+
+      {done && !cancelled && (
         <div className="border-t border-term-border pt-2 mt-1 space-y-1">
           <p className="text-term-purple font-semibold">
             ⛈ {lang === "pt"
