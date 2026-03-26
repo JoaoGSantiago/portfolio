@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import Terminal from "@/components/Terminal";
@@ -38,7 +38,9 @@ function PageContent() {
 export default function Home() {
   return (
     <LanguageProvider>
-      <PageContent />
+      <Suspense>
+        <PageContent />
+      </Suspense>
     </LanguageProvider>
   );
 }
