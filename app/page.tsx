@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import Terminal from "@/components/Terminal";
 import Portfolio from "@/components/Portfolio";
 import FloatingNav, { type View } from "@/components/FloatingNav";
 
 function PageContent() {
-  const [view, setView] = useState<View>("terminal");
+  const searchParams = useSearchParams();
+  const d = searchParams.get("d");
+  const [view, setView] = useState<View>(d === "t" ? "terminal" : "portfolio");
   const { lang, toggleLang } = useLanguage();
 
   useEffect(() => {
