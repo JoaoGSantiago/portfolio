@@ -13,8 +13,24 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "João Gustavo | DevOps",
   description:
-    "portfolio of João Gustavo.",
+    "DevOps and Cloud specialist focused on scalable infrastructure, automation and SRE.",
   icons: { icon: "/aba.png" },
+  openGraph: {
+    title: "João Gustavo | DevOps & Cloud",
+    description:
+      "DevOps and Cloud specialist focused on scalable infrastructure, automation and SRE.",
+    url: "https://joaogsantiago.vercel.app",
+    siteName: "João Gustavo · Portfolio",
+    type: "website",
+    images: [{ url: "/aba.png" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "João Gustavo | DevOps & Cloud",
+    description:
+      "DevOps and Cloud specialist focused on scalable infrastructure, automation and SRE.",
+    images: ["/aba.png"],
+  },
 };
 
 export default function RootLayout({
